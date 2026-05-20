@@ -550,6 +550,10 @@ document.getElementById(
 };
 
 
+// =====================
+// 피보나치 프리셋
+// =====================
+
 document.getElementById(
 
     "presetFibonacci"
@@ -565,61 +569,121 @@ document.getElementById(
 
         "modeSelect"
 
-    ).value =
-
-        "sequence";
+    ).value = "sequence";
 
 
 
-    graphMode =
-    "sequence";
+    graphMode = "sequence";
 
 
 
-clearSetupInputs();
+    clearSetupInputs();
 
 
 
-createSequenceUI();
+    createSequenceUI();
 
 
 
-createPointCountInput();
+    createPointCountInput();
 
 
 
-    // 식
-    document.getElementById(
-
-        "sequenceFormula"
-
-    ).value =
+    let formula =
 
         "a(n-1)+a(n-2)";
 
 
 
-    // 초기값
     document.getElementById(
 
-        "initial0"
+        "sequenceFormula"
 
-    ).value = 1;
+    ).value = formula;
+
+
+
+    // 초기값 입력창 생성
+    let order =
+
+        analyzeSequenceOrder(
+            formula
+        );
+
+
+
+    let html = "";
+
+
+
+    for (
+
+        let i = 0;
+
+        i < order;
+
+        i++
+
+    ) {
+
+        html += `
+
+<label>
+a(${i})
+</label>
+
+<br>
+
+<input
+    id="initial${i}"
+    value="1"
+>
+
+<br><br>
+
+`;
+
+    }
 
 
 
     document.getElementById(
 
-        "initial1"
+        "initialValueInputs"
 
-    ).value = 1;
+    ).innerHTML = html;
+
+
+
+    let input0 =
+        document.getElementById("initial0");
+
+    let input1 =
+        document.getElementById("initial1");
+
+
+
+    if (input0) input0.value = 1;
+
+    if (input1) input1.value = 1;
 
 
 
     createGraph();
 
+
+
+    connectSequenceSliders(
+        formula
+    );
+
 };
 
+
+
+// =====================
+// 멜서스 프리셋
+// =====================
 
 document.getElementById(
 
@@ -636,34 +700,27 @@ document.getElementById(
 
         "modeSelect"
 
-    ).value =
-
-        "sequence";
+    ).value = "sequence";
 
 
 
-    graphMode =
-    "sequence";
+    graphMode = "sequence";
 
 
 
-clearSetupInputs();
+    clearSetupInputs();
 
 
 
-createSequenceUI();
+    createSequenceUI();
 
 
 
-createPointCountInput();
+    createPointCountInput();
 
 
 
-    document.getElementById(
-
-        "sequenceFormula"
-
-    ).value =
+    let formula =
 
         "(1+r)*N(n-1)";
 
@@ -671,20 +728,95 @@ createPointCountInput();
 
     document.getElementById(
 
-        "initial0"
+        "sequenceFormula"
 
-    ).value = 10;
+    ).value = formula;
 
 
 
-    sliderValues.r = 0.2;
+    let order =
+
+        analyzeSequenceOrder(
+            formula
+        );
+
+
+
+    let html = "";
+
+
+
+    for (
+
+        let i = 0;
+
+        i < order;
+
+        i++
+
+    ) {
+
+        html += `
+
+<label>
+N(${i})
+</label>
+
+<br>
+
+<input
+    id="initial${i}"
+    value="1"
+>
+
+<br><br>
+
+`;
+
+    }
+
+
+
+    document.getElementById(
+
+        "initialValueInputs"
+
+    ).innerHTML = html;
+
+
+
+    let input0 =
+        document.getElementById("initial0");
+
+
+
+    if (input0) {
+
+        input0.value = 10;
+
+    }
+
+
+
+    sliderValues.r = 0.08;
 
 
 
     createGraph();
 
+
+
+    connectSequenceSliders(
+        formula
+    );
+
 };
 
+
+
+// =====================
+// 로지스틱 프리셋
+// =====================
 
 document.getElementById(
 
@@ -701,26 +833,29 @@ document.getElementById(
 
         "modeSelect"
 
-    ).value =
-
-        "sequence";
+    ).value = "sequence";
 
 
 
-    graphMode =
-    "sequence";
+    graphMode = "sequence";
 
 
 
-clearSetupInputs();
+    clearSetupInputs();
 
 
 
-createSequenceUI();
+    createSequenceUI();
 
 
 
-createPointCountInput();
+    createPointCountInput();
+
+
+
+    let formula =
+
+        "x(n-1)+r*x(n-1)*(1-(x(n-1)/K))";
 
 
 
@@ -728,28 +863,95 @@ createPointCountInput();
 
         "sequenceFormula"
 
-    ).value =
+    ).value = formula;
 
-        "r*x(n-1)*(1-x(n-1))";
+
+
+    let order =
+
+        analyzeSequenceOrder(
+            formula
+        );
+
+
+
+    let html = "";
+
+
+
+    for (
+
+        let i = 0;
+
+        i < order;
+
+        i++
+
+    ) {
+
+        html += `
+
+<label>
+x(${i})
+</label>
+
+<br>
+
+<input
+    id="initial${i}"
+    value="1"
+>
+
+<br><br>
+
+`;
+
+    }
 
 
 
     document.getElementById(
 
-        "initial0"
+        "initialValueInputs"
 
-    ).value = 0.5;
+    ).innerHTML = html;
 
 
 
-    sliderValues.r = 3.7;
+    let input0 =
+        document.getElementById("initial0");
+
+
+
+    if (input0) {
+
+        input0.value = 10;
+
+    }
+
+
+
+    sliderValues.r = 0.08;
+
+    sliderValues.K = 100;
 
 
 
     createGraph();
 
+
+
+    connectSequenceSliders(
+        formula
+    );
+
 };
 
+
+
+// =====================
+// 창작모델 1
+// =====================
 
 document.getElementById(
 
@@ -766,26 +968,29 @@ document.getElementById(
 
         "modeSelect"
 
-    ).value =
-
-        "sequence";
+    ).value = "sequence";
 
 
 
-    graphMode =
-    "sequence";
+    graphMode = "sequence";
 
 
 
-clearSetupInputs();
+    clearSetupInputs();
 
 
 
-createSequenceUI();
+    createSequenceUI();
 
 
 
-createPointCountInput();
+    createPointCountInput();
+
+
+
+    let formula =
+
+        "((N(n-1)-N(n-d-1))*r)+N(n-1)-c*N(n-x-1)";
 
 
 
@@ -793,58 +998,78 @@ createPointCountInput();
 
         "sequenceFormula"
 
-    ).value =
-
-        "((N(n-1)-N(n-d-1))*r)+N(n-1)-N(n-x-1)";
+    ).value = formula;
 
 
 
-    document.getElementById(
-
-        "initial0"
-
-    ).value = 10;
+    let html = "";
 
 
 
-    document.getElementById(
+    for (
 
-        "initial1"
+        let i = 0;
 
-    ).value = 12;
+        i < 15;
 
+        i++
 
+    ) {
 
-    let input2 =
+        html += `
 
-        document.getElementById(
+<label>
+N(${i})
+</label>
 
-            "initial2"
+<br>
 
-        );
+<input
+    id="initial${i}"
+    value="${10+i}"
+>
 
+<br><br>
 
-
-    if (input2) {
-
-        input2.value = 15;
+`;
 
     }
 
 
 
-    sliderValues.r = 1.2;
+    document.getElementById(
 
-    sliderValues.d = 4;
+        "initialValueInputs"
 
-    sliderValues.x = 2;
+    ).innerHTML = html;
+
+
+
+    sliderValues.r = 0.03;
+
+    sliderValues.d = 2;
+
+    sliderValues.x = 12;
+
+    sliderValues.c = 0.003;
 
 
 
     createGraph();
 
+
+
+    connectSequenceSliders(
+        formula
+    );
+
 };
 
+
+
+// =====================
+// 창작모델 2
+// =====================
 
 document.getElementById(
 
@@ -861,26 +1086,29 @@ document.getElementById(
 
         "modeSelect"
 
-    ).value =
-
-        "sequence";
+    ).value = "sequence";
 
 
 
-    graphMode =
-    "sequence";
+    graphMode = "sequence";
 
 
 
-clearSetupInputs();
+    clearSetupInputs();
 
 
 
-createSequenceUI();
+    createSequenceUI();
 
 
 
-createPointCountInput();
+    createPointCountInput();
+
+
+
+    let formula =
+
+        "((N(n-1)-N(n-d-1))*r*(1-(N(n-1)/K)))+N(n-1)-c*N(n-x-1)";
 
 
 
@@ -888,57 +1116,72 @@ createPointCountInput();
 
         "sequenceFormula"
 
-    ).value =
-
-        "((N(n-1)-N(n-(d+1)))*r*(1-(N(n-1)/K)))+N(n-1)-N(n-(x+1))";
+    ).value = formula;
 
 
 
-    document.getElementById(
-
-        "initial0"
-
-    ).value = 10;
+    let html = "";
 
 
 
-    document.getElementById(
+    for (
 
-        "initial1"
+        let i = 0;
 
-    ).value = 12;
+        i < 15;
 
+        i++
 
+    ) {
 
-    let input2 =
+        html += `
 
-        document.getElementById(
+<label>
+N(${i})
+</label>
 
-            "initial2"
+<br>
 
-        );
+<input
+    id="initial${i}"
+    value="${10+i}"
+>
 
+<br><br>
 
-
-    if (input2) {
-
-        input2.value = 15;
+`;
 
     }
 
 
 
-    sliderValues.r = 1.2;
+    document.getElementById(
 
-    sliderValues.d = 4;
+        "initialValueInputs"
 
-    sliderValues.x = 2;
+    ).innerHTML = html;
+
+
+
+    sliderValues.r = 0.08;
+
+    sliderValues.d = 2;
+
+    sliderValues.x = 12;
 
     sliderValues.K = 100;
+
+    sliderValues.c = 0.005;
 
 
 
     createGraph();
+
+
+
+    connectSequenceSliders(
+        formula
+    );
 
 };
 

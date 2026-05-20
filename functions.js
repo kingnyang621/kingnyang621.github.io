@@ -84,10 +84,10 @@ function readPointCount() {
 
 
 
-function readInitialValues(order) {
+function readInitialValues() {
 
-    log(
-        "readInitialValues"
+    console.log(
+        "readInitialValues 실행"
     );
 
 
@@ -97,24 +97,50 @@ function readInitialValues(order) {
 
 
     for (
+
         let i = 0;
-        i < order;
+
+        i < 100;
+
         i++
+
     ) {
+
+        let input =
+
+            document.getElementById(
+
+                `initial${i}`
+
+            );
+
+
+
+        if (
+
+            input == null
+
+        ) {
+
+            break;
+
+        }
+
+
 
         values.push(
 
             Number(
-
-                document.getElementById(
-                    `initial${i}`
-                ).value
-
+                input.value
             )
 
         );
 
     }
+
+
+
+    console.log(values);
 
 
 
@@ -431,8 +457,10 @@ function calculateFunctionPoints(formula) {
 
 
 function calculateSequenceValues(
+
     formula,
     initialValues
+
 ) {
 
     log(
@@ -441,52 +469,97 @@ function calculateSequenceValues(
 
 
 
+    // =====================
+    // 초기값 복사
+    // =====================
+
+    console.log(initialValues);
+    console.log(typeof initialValues);
+
     let values = [
+
         ...initialValues
+
     ];
 
 
 
+    // =====================
+    // 점 개수
+    // =====================
+
     let pointCount =
+
         readPointCount();
 
 
 
+    // =====================
+    // 초기 차수
+    // =====================
+
     let order =
+
         initialValues.length;
 
 
 
+    // =====================
+    // 점화식 반복 계산
+    // =====================
+
     for (
+
         let n = order;
+
         n < pointCount;
+
         n++
+
     ) {
 
         let expression =
+
             formula;
 
 
 
+        // =====================
+        // N(...) 치환
+        // =====================
+
         expression =
+
             expression.replace(
 
                 /[a-zA-Z]+\(n-(.*?)\)/g,
 
-                function (match, expr) {
+                function (
+
+                    match,
+                    expr
+
+                ) {
 
 
-                    // =====================
+                    // -----------------
                     // offset 계산
-                    // =====================
-                    //
-                    // 예:
-                    //
-                    // "1"
-                    // "(x+1)"
-                    //
+                    // -----------------
+
+                    expr =
+
+                        expr.replaceAll(
+
+                            "-",
+
+                            "+"
+
+                        );
+
+
 
                     let offset =
+
                         math.evaluate(
 
                             expr,
@@ -498,27 +571,31 @@ function calculateSequenceValues(
 
 
                     offset =
+
                         Math.floor(
                             offset
                         );
 
 
 
-                    // =====================
-                    // 실제 index 계산
-                    // =====================
+                    // -----------------
+                    // 실제 index
+                    // -----------------
 
                     let index =
+
                         n - offset;
 
 
 
-                    // =====================
-                    // 범위 밖이면 0
-                    // =====================
+                    // -----------------
+                    // 범위 밖
+                    // -----------------
 
                     if (
+
                         index < 0
+
                     ) {
 
                         return 0;
@@ -528,12 +605,15 @@ function calculateSequenceValues(
 
 
                     let value =
+
                         values[index];
 
 
 
                     if (
+
                         value === undefined
+
                     ) {
 
                         return 0;
@@ -549,26 +629,76 @@ function calculateSequenceValues(
             );
 
 
+
+        // =====================
+        // 변수 scope 생성
+        // =====================
+
         let scope = {};
 
 
 
-        for (let v of variables) {
+        for (
+
+            let v of variables
+
+        ) {
 
             scope[v] =
+
                 sliderValues[v];
 
         }
 
 
 
+        // =====================
+        // 실제 계산
+        // =====================
+
         let next =
+
             math.evaluate(
+
                 expression,
+
                 scope
+
             );
 
 
+
+        // =====================
+        // 안전장치
+        // =====================
+
+        if (
+
+            !isFinite(next)
+
+        ) {
+
+            next = 0;
+
+        }
+
+
+
+        if (
+
+            next < 0
+
+        ) {
+
+            next = 0;
+
+        }
+
+
+
+        // =====================
+        // 저장
+        // =====================
 
         values.push(next);
 
@@ -636,6 +766,18 @@ function renderSingleGraph(
 
 
     console.log(color);
+
+
+    console.log(points);
+
+
+    console.log(
+
+        points[0],
+        points[10],
+        points[20]
+
+    );
 
 
 
@@ -1441,9 +1583,7 @@ function createCurrentItem() {
 
         item.initialValues =
 
-            readInitialValues(
-                order
-            );
+            readInitialValues();
 
     }
 
@@ -1974,9 +2114,10 @@ function createGraph() {
         // -----------------
 
         let initialValues =
-            readInitialValues(
-                order
-            );
+            readInitialValues();
+
+
+        console.log(initialValues);
 
 
 
@@ -2161,7 +2302,6 @@ function connectFunctionSliders(
 function connectSequenceSliders(
 
     formula,
-
     initialValues
 
 ) {
@@ -2173,10 +2313,6 @@ function connectSequenceSliders(
 
 
     for (let v of variables) {
-
-        // -----------------
-        // slider
-        // -----------------
 
         let slider =
 
@@ -2198,7 +2334,6 @@ function connectSequenceSliders(
 
 
 
-        // 없으면 스킵
         if (!slider || !number) {
 
             continue;
@@ -2213,10 +2348,7 @@ function connectSequenceSliders(
 
         slider.oninput = function () {
 
-
-            updateSliderValue(
-                v
-            );
+            updateSliderValue(v);
 
 
 
@@ -2226,25 +2358,7 @@ function connectSequenceSliders(
 
 
 
-            let values =
-                calculateSequenceValues(
-
-                    formula,
-
-                    initialValues
-
-                );
-
-
-
-            let points =
-                sequenceToPoints(
-                    values
-                );
-
-
-
-            renderAllGraphs()
+            createGraph();
 
         };
 
@@ -2256,10 +2370,7 @@ function connectSequenceSliders(
 
         number.oninput = function () {
 
-
-            updateNumberValue(
-                v
-            );
+            updateNumberValue(v);
 
 
 
@@ -2269,25 +2380,7 @@ function connectSequenceSliders(
 
 
 
-            let values =
-                calculateSequenceValues(
-
-                    formula,
-
-                    initialValues
-
-                );
-
-
-
-            let points =
-                sequenceToPoints(
-                    values
-                );
-
-
-
-            renderAllGraphs()
+            createGraph();
 
         };
 
@@ -2296,92 +2389,280 @@ function connectSequenceSliders(
 }
 
 
-function renderAllGraphs() {
+        function renderAllGraphs() {
 
-    log(
-        "renderAllGraphs"
-    );
-
-
-
-    let canvas =
-
-        document.getElementById(
-
-            "myChart"
-
-        );
+            log(
+                "renderAllGraphs"
+            );
 
 
 
-    let ctx =
+            let canvas =
 
-        canvas.getContext("2d");
+                document.getElementById(
 
+                    "myChart"
 
-
-    // =====================
-    // 화면 초기화
-    // =====================
-
-    ctx.clearRect(
-
-        0,
-        0,
-        canvas.width,
-        canvas.height
-
-    );
+                );
 
 
 
-    // =====================
-    // 색 목록
-    // =====================
+            let ctx =
 
-    let colors = [
-
-        "#4FC3F7",
-        "#FF7043",
-        "#66BB6A",
-        "#BA68C8",
-        "#FFD54F"
-
-    ];
+                canvas.getContext("2d");
 
 
 
-    // =====================
-    // 그래프 반복 출력
-    // =====================
+            // =====================
+            // 화면 초기화
+            // =====================
 
-    for (
+            ctx.clearRect(
 
-        let i = 0;
+                0,
+                0,
+                canvas.width,
+                canvas.height
 
-        i < graphCollection.length;
-
-        i++
-
-    ) {
-
-        renderSingleGraph(
-
-            graphCollection[i],
-
-            colors[
-            i % colors.length
-            ]
-
-        );
-
-    }
-
-}
+            );
 
 
-function re(points) {
+            drawAxis();
 
-    renderSingleGraph(points);
 
-}
+
+            // =====================
+            // 색 목록
+            // =====================
+
+            let colors = [
+
+                "#4FC3F7",
+                "#FF7043",
+                "#66BB6A",
+                "#BA68C8",
+                "#FFD54F"
+
+            ];
+
+
+
+            // =====================
+            // 그래프 반복 출력
+            // =====================
+
+            for (
+
+                let i = 0;
+
+                i < graphCollection.length;
+
+                i++
+
+            ) {
+
+                renderSingleGraph(
+
+                    graphCollection[i],
+
+                    colors[
+                    i % colors.length
+                    ]
+
+                );
+
+            }
+
+        }
+
+
+        function re(points) {
+
+            renderSingleGraph(points);
+
+        }
+
+
+        function drawAxis() {
+
+            let canvas =
+
+                document.getElementById(
+
+                    "myChart"
+
+                );
+
+
+
+            let ctx =
+
+                canvas.getContext("2d");
+
+
+
+            ctx.strokeStyle = "#666";
+
+            ctx.lineWidth = 1;
+
+
+
+            // x축
+            ctx.beginPath();
+
+            ctx.moveTo(40, canvas.height - 40);
+
+            ctx.lineTo(
+
+                canvas.width - 20,
+
+                canvas.height - 40
+
+            );
+
+            ctx.stroke();
+
+
+
+            // y축
+            ctx.beginPath();
+
+            ctx.moveTo(40, 20);
+
+            ctx.lineTo(
+
+                40,
+
+                canvas.height - 40
+
+            );
+
+            ctx.stroke();
+
+
+
+            // =====================
+            // x축 눈금
+            // =====================
+
+            for (
+
+                let i = 0;
+
+                i <= 10;
+
+                i++
+
+            ) {
+
+                let x =
+
+                    40 +
+
+                    i *
+
+                    (
+
+                        (canvas.width - 60)
+
+                        / 10
+
+                    );
+
+
+
+                ctx.beginPath();
+
+                ctx.moveTo(
+
+                    x,
+
+                    canvas.height - 40
+
+                );
+
+                ctx.lineTo(
+
+                    x,
+
+                    canvas.height - 35
+
+                );
+
+                ctx.stroke();
+
+
+
+                ctx.fillStyle = "#999";
+
+
+
+                ctx.fillText(
+
+                    i * 10,
+
+                    x - 10,
+
+                    canvas.height - 15
+
+                );
+
+            }
+
+
+
+            // =====================
+            // y축 눈금
+            // =====================
+
+            for (
+
+                let i = 0;
+
+                i <= 10;
+
+                i++
+
+            ) {
+
+                let y =
+
+                    canvas.height
+
+                    - 40
+
+                    - i *
+
+                    (
+
+                        (canvas.height - 60)
+
+                        / 10
+
+                    );
+
+
+
+                ctx.beginPath();
+
+                ctx.moveTo(35, y);
+
+                ctx.lineTo(40, y);
+
+                ctx.stroke();
+
+
+
+                ctx.fillText(
+
+                    i * 10,
+
+                    5,
+
+                    y + 5
+
+                );
+
+            }
+
+        }
