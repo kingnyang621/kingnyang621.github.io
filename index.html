@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>MathStudio</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
+    <!-- math.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjs@11/lib/browser/math.js"></script>
+
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+    <h1>
+
+        Sequence Studio
+
+    </h1>
+
+
+
+    <div id="main">
+
+
+
+        <!-- =====================
+             그래프 영역
+             ===================== -->
+
+        <div id="graphArea">
+
+            <canvas id="myChart" width="600" height="400"></canvas>
+
+        </div>
+
+
+
+        <!-- =====================
+             오른쪽 패널
+             ===================== -->
+
+        <div id="controlArea">
+
+
+
+            <button id="openButton">
+
+                함수 만들기
+
+            </button>
+
+
+
+            <button id="changeButton">
+
+                함수 변경
+
+            </button>
+
+
+
+            <button id="saveFunctionButton">
+
+                함수 저장
+
+            </button>
+
+
+
+            <div id="setupContainer">
+
+                <div id="setupInputs"></div>
+
+            </div>
+
+
+
+            <div id="variableSelect"></div>
+
+
+
+            <div id="sliders"></div>
+
+
+
+            <div id="functionListPanel"></div>
+
+
+
+            <!-- =====================
+                 프리셋
+                 ===================== -->
+
+            <div id="presetPanel">
+
+                <div class="panelTitle">
+
+                    PRESETS
+
+                </div>
+
+
+
+                <button id="presetFibonacci">
+
+                    피보나치
+
+                </button>
+
+
+
+                <button id="presetMalthus">
+
+                    멜서스 모델
+
+                </button>
+
+
+
+                <button id="presetLogistic">
+
+                    로지스틱 모델
+
+                </button>
+
+
+
+                <button id="presetCustom1">
+
+                    창작모델1
+
+                </button>
+
+
+
+                <button id="presetCustom2">
+
+                    창작모델2
+
+                </button>
+
+            </div>
+
+
+
+        </div>
+
+
+
+    </div>
+
+    <button id="clearGraphsButton">
+
+        그래프 초기화
+
+    </button>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+
+
+    <script src="state.js"></script>
+
+    <script src="functions.js"></script>
+
+    <script src="main.js"></script>
+
+</body>
+
+</html>
