@@ -890,7 +890,7 @@ createPointCountInput();
 
     ).value =
 
-        "((N(n-1)-N(n-d-1))*r*(1-(N(n-1)/K)))+N(n-1)-N(n-x-1)";
+        "((N(n-1)-N(n-(d+1)))*r*(1-(N(n-1)/K)))+N(n-1)-N(n-(x+1))";
 
 
 
